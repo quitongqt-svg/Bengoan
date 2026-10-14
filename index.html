@@ -92,9 +92,9 @@
         Điểm thắng: <span id="g1-score" class="text-rose-500 text-sm font-black">0</span> / 5
       </div>
 
-      <a href="https://s.shopee.vn/3qNrrXM5pI" target="_blank" class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce">
+      <button type="button" onclick="openRandomShopee()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce cursor-pointer">
         🎨 THƯỞNG BÉ: BẢNG VẼ TỰ XÓA <span class="text-[9px] bg-yellow-300 text-gray-900 px-2 py-0.5 rounded-full uppercase">Shopee</span>
-      </a>
+      </button>
     </div>
   </div>
 
@@ -118,9 +118,9 @@
         Điểm thắng: <span id="g2-score" class="text-rose-500 text-sm font-black">0</span> / 5
       </div>
 
-      <a href="https://s.shopee.vn/7Kxk1tp4c7" target="_blank" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce">
+      <button type="button" onclick="openRandomShopee()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce cursor-pointer">
         📚 THƯỞNG BÉ: BỘ THẺ HỌC THÔNG MINH <span class="text-[9px] bg-yellow-300 text-gray-900 px-2 py-0.5 rounded-full uppercase">Shopee</span>
-      </a>
+      </button>
     </div>
   </div>
 
@@ -141,9 +141,9 @@
         Điểm thắng: <span id="g3-score" class="text-rose-500 text-sm font-black">0</span> / 5
       </div>
 
-      <a href="https://s.shopee.vn/8V9hQAP2sE" target="_blank" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce">
+      <button type="button" onclick="openRandomShopee()" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce cursor-pointer">
         🍼 THƯỞNG BÉ: BÌNH NƯỚC HỌC SINH <span class="text-[9px] bg-yellow-300 text-gray-900 px-2 py-0.5 rounded-full uppercase">Shopee</span>
-      </a>
+      </button>
     </div>
   </div>
 
@@ -180,6 +180,13 @@
     let audioCtx = null;
     let bubbleInterval = null;
     let currentGameNum = 0;
+
+    // Đảm bảo khi bấm Back (Quay lại) trên trình duyệt không bị trắng trang
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) {
+        goHome();
+      }
+    });
 
     function initAudio() {
       try {
@@ -415,7 +422,7 @@
 
     function createBubble() {
       const area = document.getElementById('bubble-area');
-      if (!area || area.clientWidth === 0) return;
+      if (!area || area.clientHeight === 0) return;
 
       const bubble = document.createElement('div');
       const randomChar = alphabet[Math.floor(Math.random() * alphabet.length)];
