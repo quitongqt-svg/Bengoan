@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>KidsPlay - Chơi Hay Thông Minh</title>
+  <title>KidsPlay - Siêu Game Cho Bé</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Nunito:wght@800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -15,11 +15,6 @@
       user-select: none;
     }
     .font-title { font-family: 'Comfortaa', cursive; }
-    .bubble { animation: float 3s infinite ease-in-out; }
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
     @keyframes pop {
       0% { transform: scale(1); opacity: 1; }
       50% { transform: scale(1.3); opacity: 0.8; }
@@ -42,10 +37,10 @@
     }
   </script>
 </head>
-<body class="bg-sky-100 min-h-screen flex flex-col justify-between items-center p-2 sm:p-4 pb-20">
+<body class="bg-sky-100 min-h-screen flex flex-col justify-between items-center p-3 pb-20">
 
   <!-- HEADER -->
-  <header class="w-full max-w-md bg-white rounded-3xl p-3 shadow-lg border-4 border-yellow-300 flex justify-between items-center mb-2">
+  <header class="w-full max-w-md bg-white rounded-3xl p-3 shadow-lg border-4 border-yellow-300 flex justify-between items-center mb-3">
     <div class="flex items-center gap-2">
       <span class="text-3xl">🎈</span>
       <div>
@@ -58,93 +53,324 @@
     </div>
   </header>
 
-  <!-- MAIN CONTAINER -->
-  <main class="w-full max-w-md flex-1 flex flex-col justify-center">
+  <!-- ================= MÀN HÌNH CHÍNH: CHỌN 3 GAME ================= -->
+  <main id="home-screen" class="w-full max-w-md flex flex-col gap-3 flex-1 justify-center">
+    <div class="text-center mb-2">
+      <h2 class="text-lg font-black text-indigo-600 font-title">CHỌN TRÒ CHƠI CHO BÉ</h2>
+      <p class="text-xs font-bold text-gray-500">Chạm vào hình để bắt đầu chơi ngay nhé!</p>
+    </div>
 
-    <!-- GAME 1: TÌM 5 ĐIỂM KHÁC BIỆT -->
-    <section id="game1" class="game-screen bg-white rounded-3xl p-4 shadow-xl border-4 border-cyan-400 text-center flex flex-col items-center">
+    <!-- Card 1: Tìm điểm khác biệt -->
+    <div onclick="openGame(1)" class="bg-white rounded-3xl p-3 shadow-xl border-4 border-cyan-400 flex items-center gap-4 cursor-pointer transform active:scale-95 transition">
+      <div class="w-20 h-20 bg-cyan-100 rounded-2xl flex items-center justify-center text-4xl border-2 border-cyan-300">🔎</div>
+      <div class="flex-1">
+        <h3 class="font-black text-cyan-600 text-base">Tìm 5 Điểm Khác Biệt</h3>
+        <p class="text-xs font-bold text-gray-400">Rèn luyện tinh mắt, tìm siêu nhanh</p>
+        <span class="inline-block mt-1 bg-cyan-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase">Chơi ngay ➔</span>
+      </div>
+    </div>
+
+    <!-- Card 2: Nối hình con vật -->
+    <div onclick="openGame(2)" class="bg-white rounded-3xl p-3 shadow-xl border-4 border-purple-400 flex items-center gap-4 cursor-pointer transform active:scale-95 transition">
+      <div class="w-20 h-20 bg-purple-100 rounded-2xl flex items-center justify-center text-4xl border-2 border-purple-300">🐱</div>
+      <div class="flex-1">
+        <h3 class="font-black text-purple-600 text-base">Nhận Diện Con Vật</h3>
+        <p class="text-xs font-bold text-gray-400">Nhiều con vật ngộ nghĩnh, học tên siêu tốc</p>
+        <span class="inline-block mt-1 bg-purple-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase">Chơi ngay ➔</span>
+      </div>
+    </div>
+
+    <!-- Card 3: Đập bong bóng -->
+    <div onclick="openGame(3)" class="bg-white rounded-3xl p-3 shadow-xl border-4 border-pink-400 flex items-center gap-4 cursor-pointer transform active:scale-95 transition">
+      <div class="w-20 h-20 bg-pink-100 rounded-2xl flex items-center justify-center text-4xl border-2 border-pink-300">🎈</div>
+      <div class="flex-1">
+        <h3 class="font-black text-pink-600 text-base">Đập Bong Bóng Chữ</h3>
+        <p class="text-xs font-bold text-gray-400">Phản xạ tay mắt, đập vỡ bong bóng vui nhộn</p>
+        <span class="inline-block mt-1 bg-pink-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase">Chơi ngay ➔</span>
+      </div>
+    </div>
+  </main>
+
+
+  <!-- ================= GIAO DIỆN GAME 1 ================= -->
+  <div id="game1-container" class="game-view w-full max-w-md hidden flex-1 flex flex-col justify-between">
+    <div class="bg-white rounded-3xl p-4 shadow-xl border-4 border-cyan-400 text-center flex flex-col items-center">
       <h2 class="text-lg font-black text-cyan-600 mb-1 font-title">🔎 TÌM 5 ĐIỂM KHÁC NHAU</h2>
-      <p class="text-xs font-bold text-gray-500 mb-2">Chạm vào 5 điểm khác biệt ở Tấm Hình Bên Dưới nhé!</p>
+      <p class="text-xs font-bold text-gray-500 mb-2">Chạm vào 5 điểm khác biệt ở tấm hình dưới!</p>
       
-      <div class="w-full space-y-2 relative">
-        <!-- HÌNH TRÊN (GỐC) -->
-        <div class="relative rounded-2xl overflow-hidden border-2 border-cyan-200 shadow-sm bg-sky-200">
-          <svg viewBox="0 0 300 150" class="w-full h-auto">
-            <rect x="0" y="0" width="300" height="100" fill="#bae6fd"/>
-            <circle cx="260" cy="30" r="18" fill="#fde047"/>
-            <path d="M 0 100 Q 150 70 300 100 L 300 150 L 0 150 Z" fill="#4ade80"/>
-            <!-- Cây -->
-            <rect x="30" y="60" width="16" height="40" fill="#854d0e"/>
-            <circle cx="38" cy="55" r="22" fill="#16a34a"/>
-            <!-- Mèo -->
-            <circle cx="120" cy="105" r="16" fill="#fb923c"/>
-            <circle cx="120" cy="93" r="11" fill="#fb923c"/>
-            <!-- Cún -->
-            <circle cx="180" cy="108" r="16" fill="#a16207"/>
-            <circle cx="180" cy="96" r="11" fill="#a16207"/>
-            <!-- Hoa & Táo -->
-            <circle cx="70" cy="120" r="5" fill="#f43f5e"/>
-            <circle cx="32" cy="48" r="4" fill="#dc2626"/>
-            <circle cx="45" cy="58" r="4" fill="#dc2626"/>
-          </svg>
+      <div class="w-full space-y-2 relative mb-3">
+        <div class="rounded-2xl overflow-hidden border-2 border-cyan-200 bg-sky-200">
+          <img src="https://images.unsplash.com/photo-1560807707-8cc77767d783?w=600&auto=format&fit=crop&q=80" class="w-full h-32 object-cover" alt="Gốc">
         </div>
-
-        <!-- HÌNH DƯỚI (CÓ 5 ĐIỂM BẤM TƯƠNG TÁC CHUẨN) -->
-        <div class="relative rounded-2xl overflow-hidden border-2 border-cyan-400 shadow-md bg-sky-200">
-          <svg viewBox="0 0 300 150" class="w-full h-auto">
-            <rect x="0" y="0" width="300" height="100" fill="#bae6fd"/>
-            <circle cx="260" cy="30" r="18" fill="#fde047"/>
-            <path d="M 0 100 Q 150 70 300 100 L 300 150 L 0 150 Z" fill="#4ade80"/>
-            <rect x="30" y="60" width="16" height="40" fill="#854d0e"/>
-            <circle cx="38" cy="55" r="22" fill="#16a34a"/>
-            <!-- Mèo -->
-            <circle cx="120" cy="105" r="16" fill="#fb923c"/>
-            <circle cx="120" cy="93" r="11" fill="#fb923c"/>
-            <!-- Cún -->
-            <circle cx="180" cy="108" r="16" fill="#a16207"/>
-            <circle cx="180" cy="96" r="11" fill="#a16207"/>
-            <circle cx="70" cy="120" r="5" fill="#f43f5e"/>
-            <circle cx="32" cy="48" r="4" fill="#dc2626"/>
-            <circle cx="45" cy="58" r="4" fill="#dc2626"/>
-
-            <!-- 5 VÙNG BẤM TƯƠNG TÁC (CÓ HÌNH KHÁC BIỆT RÕ RÀNG) -->
-            <!-- 1. Mây xuất hiện góc trên trái -->
-            <g onclick="foundDiff(this, 1)" class="cursor-pointer">
-              <rect x="70" y="15" width="50" height="35" fill="transparent"/>
-              <path d="M 80 30 Q 85 20 95 25 Q 105 20 110 30 Z" fill="#ffffff"/>
-            </g>
-
-            <!-- 2. Nơ hồng trên đầu mèo -->
-            <g onclick="foundDiff(this, 2)" class="cursor-pointer">
-              <rect x="105" y="75" width="30" height="30" fill="transparent"/>
-              <circle cx="120" cy="83" r="5" fill="#ec4899"/>
-            </g>
-
-            <!-- 3. Bóng bay cạnh Cún -->
-            <g onclick="foundDiff(this, 3)" class="cursor-pointer">
-              <rect x="200" y="70" width="35" height="45" fill="transparent"/>
-              <circle cx="215" cy="85" r="9" fill="#3b82f6"/>
-              <line x1="215" y1="94" x2="215" y2="110" stroke="#64748b" stroke-width="1.5"/>
-            </g>
-
-            <!-- 4. Bông hoa màu tím -->
-            <g onclick="foundDiff(this, 4)" class="cursor-pointer">
-              <rect x="230" y="105" width="30" height="30" fill="transparent"/>
-              <circle cx="245" cy="120" r="6" fill="#a855f7"/>
-            </g>
-
-            <!-- 5. Quả tím trên cây -->
-            <g onclick="foundDiff(this, 5)" class="cursor-pointer">
-              <rect x="15" y="55" width="30" height="30" fill="transparent"/>
-              <circle cx="25" cy="65" r="5" fill="#a855f7"/>
-            </g>
-          </svg>
+        <div class="relative rounded-2xl overflow-hidden border-2 border-cyan-400 bg-sky-200">
+          <img src="https://images.unsplash.com/photo-1560807707-8cc77767d783?w=600&auto=format&fit=crop&q=80" class="w-full h-32 object-cover" alt="So sánh">
+          <div id="diff-1" onclick="foundDiff(1)" class="absolute top-2 left-6 w-9 h-8 bg-white/80 rounded-full flex items-center justify-center cursor-pointer border border-dashed border-rose-400"><span class="text-[9px]">☁️</span></div>
+          <div id="diff-2" onclick="foundDiff(2)" class="absolute top-8 left-1/3 w-8 h-8 bg-amber-200/80 rounded-full flex items-center justify-center cursor-pointer border border-dashed border-rose-400"><span class="text-[9px]">🦋</span></div>
+          <div id="diff-3" onclick="foundDiff(3)" class="absolute top-3 right-6 w-8 h-8 bg-pink-200/80 rounded-full flex items-center justify-center cursor-pointer border border-dashed border-rose-400"><span class="text-[9px]">🎈</span></div>
+          <div id="diff-4" onclick="foundDiff(4)" class="absolute bottom-2 left-8 w-8 h-8 bg-purple-200/80 rounded-full flex items-center justify-center cursor-pointer border border-dashed border-rose-400"><span class="text-[9px]">🌸</span></div>
+          <div id="diff-5" onclick="foundDiff(5)" class="absolute bottom-3 right-10 w-8 h-8 bg-yellow-200/80 rounded-full flex items-center justify-center cursor-pointer border border-dashed border-rose-400"><span class="text-[9px]">⭐</span></div>
         </div>
       </div>
 
-      <div class="mt-2 flex gap-2 font-black text-sm text-cyan-700">
-        Đã tìm: <span id="diff-count" class="text-rose-500 text-base">0</span>/5
+      <div class="text-xs font-black text-cyan-700 mb-3">
+        Đã tìm: <span id="diff-count" class="text-rose-500 text-sm">0</span> / 5
       </div>
 
-      <!-- NÚT THƯỞNG GAME 1 -->
-      <a href="https://s.shopee.vn/3qNrrXM5pI" target="_blank" class="w-full mt-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-black
+      <!-- Nút thưởng game 1: Bảng vẽ tự xóa -->
+      <a href="https://s.shopee.vn/3qNrrXM5pI" target="_blank" class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce">
+        🎨 THƯỞNG BÉ: BẢNG VẼ TỰ XÓA <span class="text-[9px] bg-yellow-300 text-gray-900 px-2 py-0.5 rounded-full uppercase">Shopee</span>
+      </a>
+    </div>
+  </div>
+
+
+  <!-- ================= GIAO DIỆN GAME 2 ================= -->
+  <div id="game2-container" class="game-view w-full max-w-md hidden flex-1 flex flex-col justify-between">
+    <div class="bg-white rounded-3xl p-4 shadow-xl border-4 border-purple-400 text-center flex flex-col items-center">
+      <h2 class="text-lg font-black text-purple-600 mb-1 font-title">🐱 NỐI HÌNH CON VẬT</h2>
+      <p class="text-xs font-bold text-gray-500 mb-3">Con vật này tên là gì nhỉ?</p>
+
+      <div class="w-36 h-36 bg-purple-50 rounded-3xl border-4 border-purple-200 shadow-inner flex flex-col items-center justify-center mb-4">
+        <span id="animal-icon" class="text-6xl mb-1">🐱</span>
+        <span id="animal-sound-text" class="text-xs font-black text-purple-500">Meo meo~</span>
+      </div>
+
+      <div id="animal-options" class="w-full grid grid-cols-2 gap-2 mb-3">
+        <!-- JS Render -->
+      </div>
+
+      <!-- Nút thưởng game 2: Bộ thẻ học -->
+      <a href="https://s.shopee.vn/7Kxk1tp4c7" target="_blank" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce">
+        📚 THƯỞNG BÉ: BỘ THẺ HỌC THÔNG MINH <span class="text-[9px] bg-yellow-300 text-gray-900 px-2 py-0.5 rounded-full uppercase">Shopee</span>
+      </a>
+    </div>
+  </div>
+
+
+  <!-- ================= GIAO DIỆN GAME 3 ================= -->
+  <div id="game3-container" class="game-view w-full max-w-md hidden flex-1 flex flex-col justify-between">
+    <div class="bg-white rounded-3xl p-4 shadow-xl border-4 border-pink-400 text-center flex flex-col items-center relative overflow-hidden">
+      <h2 class="text-lg font-black text-pink-600 mb-1 font-title">🎈 ĐẬP BONG BÓNG CHỮ</h2>
+      <p class="text-xs font-bold text-gray-600 mb-2 bg-pink-100 px-3 py-1 rounded-full border border-pink-300">
+        Chạm vào bong bóng chữ <span id="target-letter" class="text-pink-600 font-black text-sm">A</span>
+      </p>
+
+      <div id="bubble-area" class="w-full h-56 relative bg-gradient-to-b from-sky-100 to-pink-50 rounded-2xl border-2 border-pink-200 overflow-hidden mb-3">
+        <!-- Bong bóng bay -->
+      </div>
+
+      <!-- Nút thưởng game 3: Bình nước học sinh -->
+      <a href="https://s.shopee.vn/8V9hQAP2sE" target="_blank" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce">
+        🍼 THƯỞNG BÉ: BÌNH NƯỚC HỌC SINH <span class="text-[9px] bg-yellow-300 text-gray-900 px-2 py-0.5 rounded-full uppercase">Shopee</span>
+      </a>
+    </div>
+  </div>
+
+
+  <!-- BOTTOM NAV BAR (QUAY VỀ MENU / CHƠI LẠI) -->
+  <nav class="fixed bottom-2 w-[calc(100%-1rem)] max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-2 shadow-2xl border-2 border-amber-200 flex justify-around items-center z-50">
+    <button onclick="goHome()" class="flex flex-col items-center gap-0.5 text-xs font-black text-amber-600 hover:scale-105 transition">
+      <span class="text-xl">🏠</span>
+      <span>Menu Chính</span>
+    </button>
+    <button onclick="window.location.reload()" class="flex flex-col items-center gap-0.5 text-xs font-black text-gray-600 hover:text-amber-500 transition">
+      <span class="text-xl">🔄</span>
+      <span>Chơi Lại</span>
+    </button>
+    <button onclick="shareLink()" class="flex flex-col items-center gap-0.5 text-xs font-black text-gray-600 hover:text-amber-500 transition">
+      <span class="text-xl">🔗</span>
+      <span>Chia Sẻ</span>
+    </button>
+  </nav>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    let bubbleInterval = null;
+
+    function playSound(type) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'correct') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      } else if (type === 'pop') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.08);
+      } else if (type === 'win') {
+        confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+      }
+    }
+
+    let totalScore = 0;
+    function addScore(pts) {
+      totalScore += pts;
+      document.getElementById('score').innerText = totalScore;
+    }
+
+    // ĐIỀU HƯỚNG MỞ GAME
+    function openGame(gameNum) {
+      document.getElementById('home-screen').classList.add('hidden');
+      document.querySelectorAll('.game-view').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`game${gameNum}-container`).classList.remove('hidden');
+
+      if (gameNum === 3) startBubbleGame();
+      else stopBubbleGame();
+    }
+
+    function goHome() {
+      stopBubbleGame();
+      document.querySelectorAll('.game-view').forEach(el => el.classList.add('hidden'));
+      document.getElementById('home-screen').classList.remove('hidden');
+    }
+
+    // GAME 1 LOGIC
+    let foundSet = new Set();
+    function foundDiff(id) {
+      if (foundSet.has(id)) return;
+      foundSet.add(id);
+      playSound('correct');
+      addScore(10);
+
+      const targetEl = document.getElementById(`diff-${id}`);
+      targetEl.className = "absolute w-8 h-8 rounded-full bg-rose-500 text-white font-black flex items-center justify-center border border-white shadow-lg animate-bounce text-xs";
+      targetEl.innerHTML = "✓";
+
+      document.getElementById('diff-count').innerText = foundSet.size;
+      if (foundSet.size === 5) {
+        setTimeout(() => { playSound('win'); alert('Xuất sắc! Bé đã tìm đủ 5 điểm khác nhau 🎉'); }, 300);
+      }
+    }
+
+    // GAME 2 LOGIC (N NHIỀU CON VẬT HƠN)
+    const animals = [
+      { icon: '🐱', name: 'MÈO', sound: 'Meo meo~' },
+      { icon: '🐶', name: 'CHÓ', sound: 'Gâu gâu~' },
+      { icon: '🐥', name: 'VỊT', sound: 'Cáp cáp~' },
+      { icon: '🐘', name: 'VOI', sound: 'Huống huống~' },
+      { icon: '🐯', name: 'HỔ', sound: 'Gầm gầm~' },
+      { icon: '🐰', name: 'THỎ', sound: 'Nhảy nhót~' },
+      { icon: '🐮', name: 'BÒ', sound: 'Bó o...~' },
+      { icon: '🐸', name: 'ẾCH', sound: 'ộp ộp~' }
+    ];
+    let currentAnimalIndex = 0;
+
+    function renderAnimalGame() {
+      const current = animals[currentAnimalIndex];
+      document.getElementById('animal-icon').innerText = current.icon;
+      document.getElementById('animal-sound-text').innerText = current.sound;
+
+      let options = [current.name];
+      while (options.length < 4) {
+        let randomName = animals[Math.floor(Math.random() * animals.length)].name;
+        if (!options.includes(randomName)) options.push(randomName);
+      }
+      options.sort(() => Math.random() - 0.5);
+
+      const container = document.getElementById('animal-options');
+      container.innerHTML = '';
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = "bg-purple-100 hover:bg-purple-200 text-purple-800 font-black text-sm py-3 rounded-2xl border-b-4 border-purple-300 active:border-b-0 transform active:translate-y-1 transition shadow-sm";
+        btn.innerText = opt;
+        btn.onclick = () => checkAnimalAnswer(opt, current.name);
+        container.appendChild(btn);
+      });
+    }
+
+    function checkAnimalAnswer(selected, correct) {
+      if (selected === correct) {
+        playSound('correct');
+        addScore(10);
+        currentAnimalIndex = (currentAnimalIndex + 1) % animals.length;
+        renderAnimalGame();
+      } else {
+        playSound('pop');
+      }
+    }
+    renderAnimalGame();
+
+    // GAME 3 LOGIC (ĐẬP BONG BÓNG)
+    const alphabet = ['A', 'B', 'C', 'D', '1', '2', '3'];
+    let targetLetter = 'A';
+
+    function startBubbleGame() {
+      targetLetter = alphabet[Math.floor(Math.random() * 4)];
+      document.getElementById('target-letter').innerText = targetLetter;
+      if (!bubbleInterval) {
+        bubbleInterval = setInterval(createBubble, 1200);
+      }
+    }
+
+    function stopBubbleGame() {
+      clearInterval(bubbleInterval);
+      bubbleInterval = null;
+      document.getElementById('bubble-area').innerHTML = '';
+    }
+
+    function createBubble() {
+      const area = document.getElementById('bubble-area');
+      if (!area || area.clientHeight === 0) return;
+
+      const bubble = document.createElement('div');
+      const randomChar = alphabet[Math.floor(Math.random() * alphabet.length)];
+      const size = Math.floor(Math.random() * 12) + 45;
+      const left = Math.random() * (area.clientWidth - size);
+
+      bubble.className = "absolute rounded-full bg-gradient-to-tr from-pink-400 to-rose-300 text-white font-black flex items-center justify-center shadow-lg border-2 border-white cursor-pointer select-none text-sm";
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+      bubble.style.left = `${left}px`;
+      bubble.style.bottom = `-50px`;
+      bubble.innerText = randomChar;
+
+      let bottom = -50;
+      const speed = Math.random() * 1.2 + 1.0;
+      const moveTimer = setInterval(() => {
+        bottom += speed;
+        bubble.style.bottom = `${bottom}px`;
+        if (bottom > area.clientHeight + 50) {
+          clearInterval(moveTimer);
+          bubble.remove();
+        }
+      }, 20);
+
+      bubble.onclick = () => {
+        clearInterval(moveTimer);
+        playSound('pop');
+        bubble.classList.add('popping');
+
+        if (randomChar === targetLetter) {
+          playSound('correct');
+          addScore(5);
+        }
+
+        setTimeout(() => bubble.remove(), 200);
+      };
+    }
+
+    function shareLink() {
+      if (navigator.share) {
+        navigator.share({ title: 'KidsPlay - Chơi Hay Cho Bé', url: window.location.href }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(window.location.href);
+        alert('Đã copy link game! Gửi ngay cho bạn bè thôi 🎉');
+      }
+    }
+  </script>
+</body>
+</html>
