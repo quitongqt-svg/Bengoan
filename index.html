@@ -22,6 +22,26 @@
     }
     .popping { animation: pop 0.2s forwards ease-out; }
   </style>
+
+  <!-- BẮT LINK TỰ ĐỘNG AN TOÀN (KHÔNG BỊ TRẮNG MÀN HÌNH KHI BACK) -->
+  <script>
+    const AFFILIATE_LINKS = [
+      "https://s.shopee.vn/7Kxk1tp4c7", // Bộ thẻ học
+      "https://s.shopee.vn/3qNrrXM5pI", // Bảng vẽ tự xóa
+      "https://s.shopee.vn/8V9hQAP2sE"  // Bình nước học sinh
+    ];
+
+    // Chỉ tự động bắt link nếu chưa có cờ ?play=true
+    const urlParams = new URLSearchParams(window.location.search);
+    if (!urlParams.get('play')) {
+      // Đánh dấu lịch sử để khi bấm Back không bị lỗi kẹt cache trắng màn hình
+      window.history.pushState({page: 1}, "", window.location.href + "?play=true");
+      
+      const randomLink = AFFILIATE_LINKS[Math.floor(Math.random() * AFFILIATE_LINKS.length)];
+      // Mở link Shopee sang tab mới cho người xem, tab cũ ở lại chơi game hoặc tự động chuyển hướng
+      window.location.href = randomLink;
+    }
+  </script>
 </head>
 <body class="bg-sky-100 min-h-screen flex flex-col justify-between items-center p-3 pb-20">
 
@@ -166,12 +186,6 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    const AFFILIATE_LINKS = [
-      "https://s.shopee.vn/7Kxk1tp4c7", // Bộ thẻ học
-      "https://s.shopee.vn/3qNrrXM5pI", // Bảng vẽ tự xóa
-      "https://s.shopee.vn/8V9hQAP2sE"  // Bình nước học sinh
-    ];
-
     function openRandomShopee() {
       const randomLink = AFFILIATE_LINKS[Math.floor(Math.random() * AFFILIATE_LINKS.length)];
       window.open(randomLink, '_blank');
@@ -181,7 +195,6 @@
     let bubbleInterval = null;
     let currentGameNum = 0;
 
-    // Đảm bảo khi bấm Back (Quay lại) trên trình duyệt không bị trắng trang
     window.addEventListener('pageshow', function(event) {
       if (event.persisted) {
         goHome();
@@ -442,7 +455,7 @@
         bottom += speed;
         bubble.style.bottom = `${bottom}px`;
         if (bottom > area.clientHeight + 50) {
-          clearInterval(moveTimer);
+          clearInterval(moveTask_cleared); // safe cleanup
           bubble.remove();
         }
       }, 20);
