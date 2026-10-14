@@ -23,7 +23,7 @@
     .popping { animation: pop 0.2s forwards ease-out; }
   </style>
 
-  <!-- BẮT LINK TỰ ĐỘNG CHUYỂN HƯỚNG SANG SHOPEE KHI VÀO WEB -->
+  <!-- SCRIPT KIỂM TRA CHUYỂN HƯỚNG AN TOÀN -->
   <script>
     const AFFILIATE_LINKS = [
       "https://s.shopee.vn/7Kxk1tp4c7", // Bộ thẻ học
@@ -31,9 +31,9 @@
       "https://s.shopee.vn/8V9hQAP2sE"  // Bình nước học sinh
     ];
 
-    // Kiểm tra nếu người dùng vào link chính mà chưa có tham số ?play=true thì tự động bắt qua link tiếp thị
+    // Chỉ tự động nhảy link nếu có tham số ?go=shopee để tránh lỗi trắng màn hình
     const urlParams = new URLSearchParams(window.location.search);
-    if (!urlParams.get('play')) {
+    if (urlParams.get('go') === 'shopee') {
       const randomLink = AFFILIATE_LINKS[Math.floor(Math.random() * AFFILIATE_LINKS.length)];
       window.location.href = randomLink;
     }
@@ -67,7 +67,7 @@
       <div class="w-16 h-16 bg-cyan-100 rounded-2xl flex items-center justify-center text-3xl border-2 border-cyan-300">🔎</div>
       <div class="flex-1">
         <h3 class="font-black text-cyan-600 text-base">Thử Thách Tinh Mắt</h3>
-        <p class="text-xs font-bold text-gray-400">Tìm hình khác biệt duy nhất</p>
+        <p class="text-xs font-bold text-gray-400">Tìm hình khác biệt (Đạt 5 điểm thắng)</p>
         <span class="inline-block mt-1 bg-cyan-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase">Chơi ngay ➔</span>
       </div>
     </button>
@@ -77,7 +77,7 @@
       <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center text-3xl border-2 border-purple-300">🐱</div>
       <div class="flex-1">
         <h3 class="font-black text-purple-600 text-base">Nhận Diện Con Vật</h3>
-        <p class="text-xs font-bold text-gray-400">Nhiều con vật ngộ nghĩnh</p>
+        <p class="text-xs font-bold text-gray-400">Đoán đúng 5 con vật để chiến thắng</p>
         <span class="inline-block mt-1 bg-purple-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase">Chơi ngay ➔</span>
       </div>
     </button>
@@ -87,7 +87,7 @@
       <div class="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center text-3xl border-2 border-pink-300">🎈</div>
       <div class="flex-1">
         <h3 class="font-black text-pink-600 text-base">Đập Bong Bóng Chữ</h3>
-        <p class="text-xs font-bold text-gray-400">Phản xạ tay mắt siêu vui</p>
+        <p class="text-xs font-bold text-gray-400">Săn đủ 5 điểm bong bóng để thắng</p>
         <span class="inline-block mt-1 bg-pink-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase">Chơi ngay ➔</span>
       </div>
     </button>
@@ -105,10 +105,9 @@
       </div>
 
       <div class="text-xs font-black text-cyan-700 mb-3">
-        Thắng: <span id="g1-score" class="text-rose-500 text-sm font-black">0</span> / 5 vòng
+        Điểm thắng: <span id="g1-score" class="text-rose-500 text-sm font-black">0</span> / 5
       </div>
 
-      <!-- Nút thưởng 1 -->
       <a href="https://s.shopee.vn/3qNrrXM5pI" target="_blank" class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce">
         🎨 THƯỞNG BÉ: BẢNG VẼ TỰ XÓA <span class="text-[9px] bg-yellow-300 text-gray-900 px-2 py-0.5 rounded-full uppercase">Shopee</span>
       </a>
@@ -119,7 +118,7 @@
   <!-- ================= GIAO DIỆN GAME 2 ================= -->
   <div id="game2-container" class="game-view w-full max-w-md hidden flex-1 flex-col justify-between">
     <div class="bg-white rounded-3xl p-4 shadow-xl border-4 border-purple-400 text-center flex flex-col items-center">
-      <h2 class="text-lg font-black text-purple-600 mb-1 font-title">🐱 NỐI HÌNH CON VẬT</h2>
+      <h2 class="text-lg font-black text-purple-600 mb-1 font-title">🐱 NHẬN DIỆN CON VẬT</h2>
       <p class="text-xs font-bold text-gray-500 mb-3">Con vật này tên là gì nhỉ?</p>
 
       <div class="w-36 h-36 bg-purple-50 rounded-3xl border-4 border-purple-200 shadow-inner flex flex-col items-center justify-center mb-4">
@@ -131,7 +130,10 @@
         <!-- JS Render -->
       </div>
 
-      <!-- Nút thưởng 2 -->
+      <div class="text-xs font-black text-purple-700 mb-2">
+        Điểm thắng: <span id="g2-score" class="text-rose-500 text-sm font-black">0</span> / 5
+      </div>
+
       <a href="https://s.shopee.vn/7Kxk1tp4c7" target="_blank" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce">
         📚 THƯỞNG BÉ: BỘ THẺ HỌC THÔNG MINH <span class="text-[9px] bg-yellow-300 text-gray-900 px-2 py-0.5 rounded-full uppercase">Shopee</span>
       </a>
@@ -144,14 +146,17 @@
     <div class="bg-white rounded-3xl p-4 shadow-xl border-4 border-pink-400 text-center flex flex-col items-center relative overflow-hidden">
       <h2 class="text-lg font-black text-pink-600 mb-1 font-title">🎈 ĐẬP BONG BÓNG CHỮ</h2>
       <p class="text-xs font-bold text-gray-600 mb-2 bg-pink-100 px-3 py-1 rounded-full border border-pink-300">
-        Chạm vào bong bóng chữ <span id="target-letter" class="text-pink-600 font-black text-sm">A</span>
+        Chạm bong bóng chữ <span id="target-letter" class="text-pink-600 font-black text-sm">A</span>
       </p>
 
-      <div id="bubble-area" class="w-full h-64 relative bg-gradient-to-b from-sky-100 to-pink-50 rounded-2xl border-2 border-pink-200 overflow-hidden mb-3">
+      <div id="bubble-area" class="w-full h-56 relative bg-gradient-to-b from-sky-100 to-pink-50 rounded-2xl border-2 border-pink-200 overflow-hidden mb-2">
         <!-- Bong bóng bay -->
       </div>
 
-      <!-- Nút thưởng 3 -->
+      <div class="text-xs font-black text-pink-700 mb-2">
+        Điểm thắng: <span id="g3-score" class="text-rose-500 text-sm font-black">0</span> / 5
+      </div>
+
       <a href="https://s.shopee.vn/8V9hQAP2sE" target="_blank" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black text-xs py-3 rounded-2xl shadow-md border-2 border-white flex items-center justify-center gap-2 animate-bounce">
         🍼 THƯỞNG BÉ: BÌNH NƯỚC HỌC SINH <span class="text-[9px] bg-yellow-300 text-gray-900 px-2 py-0.5 rounded-full uppercase">Shopee</span>
       </a>
@@ -245,7 +250,7 @@
       target.classList.add('flex');
 
       if (gameNum === 1) initPuzzle();
-      if (gameNum === 2) renderAnimalGame();
+      if (gameNum === 2) initAnimalGame();
       if (gameNum === 3) startBubbleGame();
       else stopBubbleGame();
     }
@@ -259,7 +264,7 @@
       document.getElementById('home-screen').style.display = 'flex';
     }
 
-    // GAME 1 LOGIC
+    // ================= GAME 1 LOGIC (TÌM KHÁC BIỆT - THẮNG 5 ĐIỂM) =================
     const puzzlePairs = [
       { normal: '🍎', odd: '🍏' },
       { normal: '🐶', odd: '🐱' },
@@ -267,26 +272,26 @@
       { normal: '⭐', odd: '❤️' },
       { normal: '⚽', odd: '🏀' }
     ];
-    let currentRound = 0;
+    let g1Wins = 0;
 
     function initPuzzle() {
-      currentRound = 0;
+      g1Wins = 0;
       loadPuzzleRound();
     }
 
     function loadPuzzleRound() {
-      if (currentRound >= 5) {
+      if (g1Wins >= 5) {
         playSound('win');
         speak('Bé xuất sắc quá! Bé ơi nói mẹ thưởng nha!');
-        alert('Tuyệt đỉnh! Bé ơi nói mẹ thưởng nha 🎉');
+        alert('Chiến thắng! Bé ơi nói mẹ thưởng nha 🎉');
         goHome();
         return;
       }
-      document.getElementById('g1-score').innerText = currentRound;
+      document.getElementById('g1-score').innerText = g1Wins;
       const grid = document.getElementById('grid-puzzle');
       grid.innerHTML = '';
 
-      const pair = puzzlePairs[currentRound];
+      const pair = puzzlePairs[g1Wins % puzzlePairs.length];
       const oddIndex = Math.floor(Math.random() * 9);
 
       for (let i = 0; i < 9; i++) {
@@ -299,138 +304,8 @@
           if (isOdd) {
             playSound('win');
             speak('Đúng rồi, bé iu ơi!');
-            currentRound++;
+            addScore(10);
+            g1Wins++;
             loadPuzzleRound();
           } else {
             playSound('pop');
-            speak('Sai rồi, bé iu ơi!');
-          }
-        };
-        grid.appendChild(btn);
-      }
-    }
-
-    // GAME 2 LOGIC
-    const animals = [
-      { icon: '🐱', name: 'MÈO', sound: 'Meo meo~' },
-      { icon: '🐶', name: 'CHÓ', sound: 'Gâu gâu~' },
-      { icon: '🐥', name: 'VỊT', sound: 'Cáp cáp~' },
-      { icon: '🐘', name: 'VOI', sound: 'Huống huống~' },
-      { icon: '🐯', name: 'HỔ', sound: 'Gầm gầm~' },
-      { icon: '🐰', name: 'THỎ', sound: 'Nhảy nhót~' },
-      { icon: '🐮', name: 'BÒ', sound: 'Bó o...~' },
-      { icon: '🐸', name: 'ẾCH', sound: 'ộp ộp~' }
-    ];
-    let currentAnimalIndex = 0;
-
-    function renderAnimalGame() {
-      const current = animals[currentAnimalIndex];
-      document.getElementById('animal-icon').innerText = current.icon;
-      document.getElementById('animal-sound-text').innerText = current.sound;
-
-      let options = [current.name];
-      while (options.length < 4) {
-        let randomName = animals[Math.floor(Math.random() * animals.length)].name;
-        if (!options.includes(randomName)) options.push(randomName);
-      }
-      options.sort(() => Math.random() - 0.5);
-
-      const container = document.getElementById('animal-options');
-      container.innerHTML = '';
-      options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = "bg-purple-100 hover:bg-purple-200 text-purple-800 font-black text-sm py-3 rounded-2xl border-b-4 border-purple-300 active:border-b-0 transform active:translate-y-1 transition shadow-sm";
-        btn.innerText = opt;
-        btn.onclick = () => checkAnimalAnswer(opt, current.name);
-        container.appendChild(btn);
-      });
-    }
-
-    function checkAnimalAnswer(selected, correct) {
-      if (selected === correct) {
-        playSound('win');
-        speak('Đúng rồi, bé iu ơi!');
-        addScore(10);
-        currentAnimalIndex = (currentAnimalIndex + 1) % animals.length;
-        renderAnimalGame();
-      } else {
-        playSound('pop');
-        speak('Sai rồi, bé iu ơi!');
-      }
-    }
-
-    // GAME 3 LOGIC
-    const alphabet = ['A', 'B', 'C', 'D', '1', '2', '3'];
-    let targetLetter = 'A';
-
-    function startBubbleGame() {
-      stopBubbleGame();
-      targetLetter = alphabet[Math.floor(Math.random() * 4)];
-      document.getElementById('target-letter').innerText = targetLetter;
-      bubbleInterval = setInterval(createBubble, 950);
-    }
-
-    function stopBubbleGame() {
-      if (bubbleInterval) {
-        clearInterval(bubbleInterval);
-        bubbleInterval = null;
-      }
-      const area = document.getElementById('bubble-area');
-      if (area) area.innerHTML = '';
-    }
-
-    function createBubble() {
-      const area = document.getElementById('bubble-area');
-      if (!area || area.clientWidth === 0) return;
-
-      const bubble = document.createElement('div');
-      const randomChar = alphabet[Math.floor(Math.random() * alphabet.length)];
-      const size = Math.floor(Math.random() * 12) + 48;
-      const left = Math.random() * (area.clientWidth - size);
-
-      bubble.className = "absolute rounded-full bg-gradient-to-tr from-pink-400 to-rose-300 text-white font-black flex items-center justify-center shadow-lg border-2 border-white cursor-pointer select-none text-base";
-      bubble.style.width = `${size}px`;
-      bubble.style.height = `${size}px`;
-      bubble.style.left = `${left}px`;
-      bubble.style.bottom = `-50px`;
-      bubble.innerText = randomChar;
-
-      let bottom = -50;
-      const speed = Math.random() * 1.5 + 1.2;
-      const moveTimer = setInterval(() => {
-        bottom += speed;
-        bubble.style.bottom = `${bottom}px`;
-        if (bottom > area.clientHeight + 50) {
-          clearInterval(moveTimer);
-          bubble.remove();
-        }
-      }, 20);
-
-      bubble.onclick = () => {
-        clearInterval(moveTimer);
-        playSound('pop');
-        bubble.classList.add('popping');
-
-        if (randomChar === targetLetter) {
-          addScore(5);
-        }
-
-        setTimeout(() => bubble.remove(), 200);
-      };
-
-      area.appendChild(bubble);
-    }
-
-    function shareLink() {
-      // Khi bấm chia sẻ, tự động gắn thêm ?play=true để người được chia sẻ vào chơi game thẳng luôn mà không bị bắt qua link Shopee
-      const playUrl = window.location.origin + window.location.pathname + '?play=true';
-      if (navigator.share) {
-        navigator.share({ title: 'KidsPlay - Chơi Hay Cho Bé', url: playUrl }).catch(() => {});
-      } else {
-        navigator.clipboard.writeText(playUrl);
-        alert('Đã copy link chơi game (đã bỏ qua chuyển hướng để bé vào chơi ngay)! Gửi ngay cho bạn bè thôi 🎉');
-      }
-    }
-  </script>
-</body>
-</html>
