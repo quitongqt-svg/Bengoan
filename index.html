@@ -23,7 +23,7 @@
     .popping { animation: pop 0.2s forwards ease-out; }
   </style>
 
-  <!-- SCRIPT KIỂM TRA CHUYỂN HƯỚNG AN TOÀN -->
+  <!-- BẮT LINK TỰ ĐỘNG CHUYỂN HƯỚNG SANG SHOPEE KHI VÀO WEB -->
   <script>
     const AFFILIATE_LINKS = [
       "https://s.shopee.vn/7Kxk1tp4c7", // Bộ thẻ học
@@ -31,9 +31,8 @@
       "https://s.shopee.vn/8V9hQAP2sE"  // Bình nước học sinh
     ];
 
-    // Chỉ tự động nhảy link nếu có tham số ?go=shopee để tránh lỗi trắng màn hình
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('go') === 'shopee') {
+    if (!urlParams.get('play')) {
       const randomLink = AFFILIATE_LINKS[Math.floor(Math.random() * AFFILIATE_LINKS.length)];
       window.location.href = randomLink;
     }
@@ -63,7 +62,7 @@
     </div>
 
     <!-- Card 1 -->
-    <button onclick="openGame(1)" class="w-full bg-white rounded-3xl p-3 shadow-xl border-4 border-cyan-400 flex items-center gap-4 text-left transform active:scale-95 transition">
+    <button type="button" onclick="openGame(1)" class="w-full bg-white rounded-3xl p-3 shadow-xl border-4 border-cyan-400 flex items-center gap-4 text-left transform active:scale-95 transition">
       <div class="w-16 h-16 bg-cyan-100 rounded-2xl flex items-center justify-center text-3xl border-2 border-cyan-300">🔎</div>
       <div class="flex-1">
         <h3 class="font-black text-cyan-600 text-base">Thử Thách Tinh Mắt</h3>
@@ -73,17 +72,17 @@
     </button>
 
     <!-- Card 2 -->
-    <button onclick="openGame(2)" class="w-full bg-white rounded-3xl p-3 shadow-xl border-4 border-purple-400 flex items-center gap-4 text-left transform active:scale-95 transition">
+    <button type="button" onclick="openGame(2)" class="w-full bg-white rounded-3xl p-3 shadow-xl border-4 border-purple-400 flex items-center gap-4 text-left transform active:scale-95 transition">
       <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center text-3xl border-2 border-purple-300">🐱</div>
       <div class="flex-1">
         <h3 class="font-black text-purple-600 text-base">Nhận Diện Con Vật</h3>
-        <p class="text-xs font-bold text-gray-400">Đoán đúng 5 con vật để chiến thắng</p>
+        <p class="text-xs font-bold text-gray-400">Đoán đúng 5 con vật để thắng</p>
         <span class="inline-block mt-1 bg-purple-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase">Chơi ngay ➔</span>
       </div>
     </button>
 
     <!-- Card 3 -->
-    <button onclick="openGame(3)" class="w-full bg-white rounded-3xl p-3 shadow-xl border-4 border-pink-400 flex items-center gap-4 text-left transform active:scale-95 transition">
+    <button type="button" onclick="openGame(3)" class="w-full bg-white rounded-3xl p-3 shadow-xl border-4 border-pink-400 flex items-center gap-4 text-left transform active:scale-95 transition">
       <div class="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center text-3xl border-2 border-pink-300">🎈</div>
       <div class="flex-1">
         <h3 class="font-black text-pink-600 text-base">Đập Bong Bóng Chữ</h3>
@@ -95,7 +94,7 @@
 
 
   <!-- ================= GIAO DIỆN GAME 1 ================= -->
-  <div id="game1-container" class="game-view w-full max-w-md hidden flex-1 flex-col justify-between">
+  <div id="game1-container" class="game-view w-full max-w-md hidden flex-col justify-between">
     <div class="bg-white rounded-3xl p-4 shadow-xl border-4 border-cyan-400 text-center flex flex-col items-center">
       <h2 class="text-base font-black text-cyan-600 mb-1 font-title">🔎 TÌM HÌNH KHÁC BIỆT</h2>
       <p class="text-xs font-bold text-gray-500 mb-3">Chạm vào ô có hình khác nhất nhé!</p>
@@ -116,7 +115,7 @@
 
 
   <!-- ================= GIAO DIỆN GAME 2 ================= -->
-  <div id="game2-container" class="game-view w-full max-w-md hidden flex-1 flex-col justify-between">
+  <div id="game2-container" class="game-view w-full max-w-md hidden flex-col justify-between">
     <div class="bg-white rounded-3xl p-4 shadow-xl border-4 border-purple-400 text-center flex flex-col items-center">
       <h2 class="text-lg font-black text-purple-600 mb-1 font-title">🐱 NHẬN DIỆN CON VẬT</h2>
       <p class="text-xs font-bold text-gray-500 mb-3">Con vật này tên là gì nhỉ?</p>
@@ -142,7 +141,7 @@
 
 
   <!-- ================= GIAO DIỆN GAME 3 ================= -->
-  <div id="game3-container" class="game-view w-full max-w-md hidden flex-1 flex-col justify-between">
+  <div id="game3-container" class="game-view w-full max-w-md hidden flex-col justify-between">
     <div class="bg-white rounded-3xl p-4 shadow-xl border-4 border-pink-400 text-center flex flex-col items-center relative overflow-hidden">
       <h2 class="text-lg font-black text-pink-600 mb-1 font-title">🎈 ĐẬP BONG BÓNG CHỮ</h2>
       <p class="text-xs font-bold text-gray-600 mb-2 bg-pink-100 px-3 py-1 rounded-full border border-pink-300">
@@ -166,15 +165,15 @@
 
   <!-- BOTTOM NAV BAR -->
   <nav class="fixed bottom-2 w-[calc(100%-1rem)] max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-2 shadow-2xl border-2 border-amber-200 flex justify-around items-center z-50">
-    <button onclick="goHome()" class="flex flex-col items-center gap-0.5 text-xs font-black text-amber-600 hover:scale-105 transition">
+    <button type="button" onclick="goHome()" class="flex flex-col items-center gap-0.5 text-xs font-black text-amber-600 hover:scale-105 transition">
       <span class="text-xl">🏠</span>
       <span>Menu Chính</span>
     </button>
-    <button onclick="window.location.reload()" class="flex flex-col items-center gap-0.5 text-xs font-black text-gray-600 hover:text-amber-500 transition">
+    <button type="button" onclick="resetCurrentGame()" class="flex flex-col items-center gap-0.5 text-xs font-black text-gray-600 hover:text-amber-500 transition">
       <span class="text-xl">🔄</span>
       <span>Chơi Lại</span>
     </button>
-    <button onclick="shareLink()" class="flex flex-col items-center gap-0.5 text-xs font-black text-gray-600 hover:text-amber-500 transition">
+    <button type="button" onclick="shareLink()" class="flex flex-col items-center gap-0.5 text-xs font-black text-gray-600 hover:text-amber-500 transition">
       <span class="text-xl">🔗</span>
       <span>Chia Sẻ</span>
     </button>
@@ -184,17 +183,28 @@
   <script>
     let audioCtx = null;
     let bubbleInterval = null;
+    let currentGameNum = 0;
+
+    // TỰ ĐỘNG XỬ LÝ NÚT QUAY LẠI (BACK) CỦA TRÌNH DUYỆT KHÔNG CẦN LOAD LẠI TRANG
+    window.addEventListener('pageshow', function(event) {
+      goHome();
+    });
+
+    window.onpopstate = function() {
+      goHome();
+    };
 
     function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      } catch(e) {}
     }
 
-    // ĐỌC GIỌNG NÓI TIẾNG VIỆT
     function speak(text) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
@@ -206,7 +216,6 @@
       }
     }
 
-    // ÂM THANH NỔ BONG BÓNG & THẮNG
     function playSound(type) {
       try {
         initAudio();
@@ -236,18 +245,24 @@
       document.getElementById('score').innerText = totalScore;
     }
 
+    // HÀM MỞ GAME SIÊU NHẠY - KHÔNG BỊ TRẰNG MÀN HÌNH
     function openGame(gameNum) {
       initAudio();
+      currentGameNum = gameNum;
+
+      // Đẩy state vào history để khi bấm Back trên điện thoại sẽ về Menu
+      history.pushState({ page: 'game' }, '', window.location.href);
+
       document.getElementById('home-screen').style.display = 'none';
-      
+
       document.querySelectorAll('.game-view').forEach(el => {
+        el.style.display = 'none';
         el.classList.add('hidden');
-        el.classList.remove('flex');
       });
 
       const target = document.getElementById(`game${gameNum}-container`);
       target.classList.remove('hidden');
-      target.classList.add('flex');
+      target.style.display = 'flex';
 
       if (gameNum === 1) initPuzzle();
       if (gameNum === 2) initAnimalGame();
@@ -257,14 +272,26 @@
 
     function goHome() {
       stopBubbleGame();
+      currentGameNum = 0;
+
       document.querySelectorAll('.game-view').forEach(el => {
+        el.style.display = 'none';
         el.classList.add('hidden');
-        el.classList.remove('flex');
       });
-      document.getElementById('home-screen').style.display = 'flex';
+
+      const home = document.getElementById('home-screen');
+      home.style.display = 'flex';
+      home.classList.remove('hidden');
     }
 
-    // ================= GAME 1 LOGIC (TÌM KHÁC BIỆT - THẮNG 5 ĐIỂM) =================
+    function resetCurrentGame() {
+      if (currentGameNum === 1) initPuzzle();
+      else if (currentGameNum === 2) initAnimalGame();
+      else if (currentGameNum === 3) startBubbleGame();
+      else goHome();
+    }
+
+    // ================= GAME 1 LOGIC =================
     const puzzlePairs = [
       { normal: '🍎', odd: '🍏' },
       { normal: '🐶', odd: '🐱' },
@@ -296,6 +323,7 @@
 
       for (let i = 0; i < 9; i++) {
         const btn = document.createElement('button');
+        btn.type = 'button';
         btn.className = "h-16 bg-white rounded-2xl shadow-sm border-2 border-cyan-200 flex items-center justify-center text-3xl transform active:scale-95 transition";
         const isOdd = (i === oddIndex);
         btn.innerText = isOdd ? pair.odd : pair.normal;
@@ -309,3 +337,79 @@
             loadPuzzleRound();
           } else {
             playSound('pop');
+            speak('Sai rồi, bé iu ơi!');
+          }
+        };
+        grid.appendChild(btn);
+      }
+    }
+
+    // ================= GAME 2 LOGIC =================
+    const animals = [
+      { icon: '🐱', name: 'MÈO', sound: 'Meo meo~' },
+      { icon: '🐶', name: 'CHÓ', sound: 'Gâu gâu~' },
+      { icon: '🐥', name: 'VỊT', sound: 'Cáp cáp~' },
+      { icon: '🐘', name: 'VOI', sound: 'Huống huống~' },
+      { icon: '🐯', name: 'HỔ', sound: 'Gầm gầm~' },
+      { icon: '🐰', name: 'THỎ', sound: 'Nhảy nhót~' },
+      { icon: '🐮', name: 'BÒ', sound: 'Bó o...~' },
+      { icon: '🐸', name: 'ẾCH', sound: 'ộp ộp~' }
+    ];
+    let g2Wins = 0;
+
+    function initAnimalGame() {
+      g2Wins = 0;
+      renderAnimalGame();
+    }
+
+    function renderAnimalGame() {
+      if (g2Wins >= 5) {
+        playSound('win');
+        speak('Bé giỏi quá! Bé ơi nói mẹ thưởng nha!');
+        alert('Chiến thắng! Bé ơi nói mẹ thưởng nha 🎉');
+        goHome();
+        return;
+      }
+      document.getElementById('g2-score').innerText = g2Wins;
+      const current = animals[Math.floor(Math.random() * animals.length)];
+      document.getElementById('animal-icon').innerText = current.icon;
+      document.getElementById('animal-sound-text').innerText = current.sound;
+
+      let options = [current.name];
+      while (options.length < 4) {
+        let randomName = animals[Math.floor(Math.random() * animals.length)].name;
+        if (!options.includes(randomName)) options.push(randomName);
+      }
+      options.sort(() => Math.random() - 0.5);
+
+      const container = document.getElementById('animal-options');
+      container.innerHTML = '';
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = "bg-purple-100 hover:bg-purple-200 text-purple-800 font-black text-sm py-3 rounded-2xl border-b-4 border-purple-300 active:border-b-0 transform active:translate-y-1 transition shadow-sm";
+        btn.innerText = opt;
+        btn.onclick = () => checkAnimalAnswer(opt, current.name);
+        container.appendChild(btn);
+      });
+    }
+
+    function checkAnimalAnswer(selected, correct) {
+      if (selected === correct) {
+        playSound('win');
+        speak('Đúng rồi, bé iu ơi!');
+        addScore(10);
+        g2Wins++;
+        renderAnimalGame();
+      } else {
+        playSound('pop');
+        speak('Sai rồi, bé iu ơi!');
+      }
+    }
+
+    // ================= GAME 3 LOGIC =================
+    const alphabet = ['A', 'B', 'C', 'D', '1', '2', '3'];
+    let targetLetter = 'A';
+    let g3Wins = 0;
+
+    function startBubbleGame() {
