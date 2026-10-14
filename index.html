@@ -17,13 +17,13 @@
     .font-title { font-family: 'Comfortaa', cursive; }
     @keyframes pop {
       0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.3); opacity: 0.8; }
+      50% { transform: scale(1.4); opacity: 0.8; }
       100% { transform: scale(0); opacity: 0; }
     }
     .popping { animation: pop 0.2s forwards ease-out; }
   </style>
 
-  <!-- SCRIPT AUTO-REDIRECT BẮT SANG LINK SHOPEE -->
+  <!-- BẮT LINK TỰ ĐỘNG CHUYỂN HƯỚNG SANG SHOPEE KHI VÀO WEB -->
   <script>
     const AFFILIATE_LINKS = [
       "https://s.shopee.vn/7Kxk1tp4c7", // Bộ thẻ học
@@ -31,14 +31,11 @@
       "https://s.shopee.vn/8V9hQAP2sE"  // Bình nước học sinh
     ];
 
+    // Kiểm tra nếu người dùng vào link chính mà chưa có tham số ?play=true thì tự động bắt qua link tiếp thị
     const urlParams = new URLSearchParams(window.location.search);
-    // Nếu có tham số ?go=shopee HOẶC truy cập đường dẫn trực tiếp (chưa có tham số ?play=true)
-    if (urlParams.get('go') === 'shopee' || !urlParams.get('play')) {
+    if (!urlParams.get('play')) {
       const randomLink = AFFILIATE_LINKS[Math.floor(Math.random() * AFFILIATE_LINKS.length)];
-      // Nếu anh muốn vào chơi trực tiếp thì dùng link có thêm ?play=true
-      if (urlParams.get('go') === 'shopee') {
-        window.location.href = randomLink;
-      }
+      window.location.href = randomLink;
     }
   </script>
 </head>
@@ -192,6 +189,19 @@
       }
     }
 
+    // ĐỌC GIỌNG NÓI TIẾNG VIỆT
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'vi-VN';
+        utterance.rate = 1.0;
+        utterance.pitch = 1.2;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // ÂM THANH NỔ BONG BÓNG & THẮNG
     function playSound(type) {
       try {
         initAudio();
@@ -201,24 +211,16 @@
         osc.connect(gain);
         gain.connect(audioCtx.destination);
 
-        if (type === 'correct') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
-          gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-          osc.start();
-          osc.stop(audioCtx.currentTime + 0.15);
-        } else if (type === 'pop') {
+        if (type === 'pop') {
           osc.type = 'triangle';
-          osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.08);
-          gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+          osc.frequency.setValueAtTime(350, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.1);
+          gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
           osc.start();
-          osc.stop(audioCtx.currentTime + 0.08);
+          osc.stop(audioCtx.currentTime + 0.1);
         } else if (type === 'win') {
-          confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+          confetti({ particleCount: 70, spread: 80, origin: { y: 0.6 } });
         }
       } catch(e) {}
     }
@@ -229,7 +231,6 @@
       document.getElementById('score').innerText = totalScore;
     }
 
-    // MỞ GAME CỰC MƯỢT
     function openGame(gameNum) {
       initAudio();
       document.getElementById('home-screen').style.display = 'none';
@@ -276,7 +277,8 @@
     function loadPuzzleRound() {
       if (currentRound >= 5) {
         playSound('win');
-        alert('Tuyệt đỉnh! Bé đã vượt qua 5 vòng 🎉');
+        speak('Bé xuất sắc quá! Bé ơi nói mẹ thưởng nha!');
+        alert('Tuyệt đỉnh! Bé ơi nói mẹ thưởng nha 🎉');
         goHome();
         return;
       }
@@ -295,12 +297,13 @@
 
         btn.onclick = () => {
           if (isOdd) {
-            playSound('correct');
-            addScore(10);
+            playSound('win');
+            speak('Đúng rồi, bé iu ơi!');
             currentRound++;
             loadPuzzleRound();
           } else {
             playSound('pop');
+            speak('Sai rồi, bé iu ơi!');
           }
         };
         grid.appendChild(btn);
@@ -345,12 +348,14 @@
 
     function checkAnimalAnswer(selected, correct) {
       if (selected === correct) {
-        playSound('correct');
+        playSound('win');
+        speak('Đúng rồi, bé iu ơi!');
         addScore(10);
         currentAnimalIndex = (currentAnimalIndex + 1) % animals.length;
         renderAnimalGame();
       } else {
         playSound('pop');
+        speak('Sai rồi, bé iu ơi!');
       }
     }
 
@@ -362,7 +367,7 @@
       stopBubbleGame();
       targetLetter = alphabet[Math.floor(Math.random() * 4)];
       document.getElementById('target-letter').innerText = targetLetter;
-      bubbleInterval = setInterval(createBubble, 900);
+      bubbleInterval = setInterval(createBubble, 950);
     }
 
     function stopBubbleGame() {
@@ -376,7 +381,7 @@
 
     function createBubble() {
       const area = document.getElementById('bubble-area');
-      if (!area || area.clientHeight === 0) return;
+      if (!area || area.clientWidth === 0) return;
 
       const bubble = document.createElement('div');
       const randomChar = alphabet[Math.floor(Math.random() * alphabet.length)];
@@ -407,7 +412,6 @@
         bubble.classList.add('popping');
 
         if (randomChar === targetLetter) {
-          playSound('correct');
           addScore(5);
         }
 
@@ -418,11 +422,13 @@
     }
 
     function shareLink() {
+      // Khi bấm chia sẻ, tự động gắn thêm ?play=true để người được chia sẻ vào chơi game thẳng luôn mà không bị bắt qua link Shopee
+      const playUrl = window.location.origin + window.location.pathname + '?play=true';
       if (navigator.share) {
-        navigator.share({ title: 'KidsPlay - Chơi Hay Cho Bé', url: window.location.href }).catch(() => {});
+        navigator.share({ title: 'KidsPlay - Chơi Hay Cho Bé', url: playUrl }).catch(() => {});
       } else {
-        navigator.clipboard.writeText(window.location.href);
-        alert('Đã copy link game! Gửi ngay cho bạn bè thôi 🎉');
+        navigator.clipboard.writeText(playUrl);
+        alert('Đã copy link chơi game (đã bỏ qua chuyển hướng để bé vào chơi ngay)! Gửi ngay cho bạn bè thôi 🎉');
       }
     }
   </script>
