@@ -22,21 +22,6 @@
     }
     .popping { animation: pop 0.2s forwards ease-out; }
   </style>
-
-  <!-- BẮT LINK TỰ ĐỘNG CHUYỂN HƯỚNG SANG SHOPEE KHI VÀO WEB -->
-  <script>
-    const AFFILIATE_LINKS = [
-      "https://s.shopee.vn/7Kxk1tp4c7", // Bộ thẻ học
-      "https://s.shopee.vn/3qNrrXM5pI", // Bảng vẽ tự xóa
-      "https://s.shopee.vn/8V9hQAP2sE"  // Bình nước học sinh
-    ];
-
-    const urlParams = new URLSearchParams(window.location.search);
-    if (!urlParams.get('play')) {
-      const randomLink = AFFILIATE_LINKS[Math.floor(Math.random() * AFFILIATE_LINKS.length)];
-      window.location.href = randomLink;
-    }
-  </script>
 </head>
 <body class="bg-sky-100 min-h-screen flex flex-col justify-between items-center p-3 pb-20">
 
@@ -173,26 +158,28 @@
       <span class="text-xl">🔄</span>
       <span>Chơi Lại</span>
     </button>
-    <button type="button" onclick="shareLink()" class="flex flex-col items-center gap-0.5 text-xs font-black text-gray-600 hover:text-amber-500 transition">
-      <span class="text-xl">🔗</span>
-      <span>Chia Sẻ</span>
+    <button type="button" onclick="openRandomShopee()" class="flex flex-col items-center gap-0.5 text-xs font-black text-rose-500 hover:scale-105 transition animate-pulse">
+      <span class="text-xl">🎁</span>
+      <span>Thưởng Quà</span>
     </button>
   </nav>
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
+    const AFFILIATE_LINKS = [
+      "https://s.shopee.vn/7Kxk1tp4c7", // Bộ thẻ học
+      "https://s.shopee.vn/3qNrrXM5pI", // Bảng vẽ tự xóa
+      "https://s.shopee.vn/8V9hQAP2sE"  // Bình nước học sinh
+    ];
+
+    function openRandomShopee() {
+      const randomLink = AFFILIATE_LINKS[Math.floor(Math.random() * AFFILIATE_LINKS.length)];
+      window.open(randomLink, '_blank');
+    }
+
     let audioCtx = null;
     let bubbleInterval = null;
     let currentGameNum = 0;
-
-    // TỰ ĐỘNG XỬ LÝ NÚT QUAY LẠI (BACK) CỦA TRÌNH DUYỆT KHÔNG CẦN LOAD LẠI TRANG
-    window.addEventListener('pageshow', function(event) {
-      goHome();
-    });
-
-    window.onpopstate = function() {
-      goHome();
-    };
 
     function initAudio() {
       try {
@@ -245,13 +232,9 @@
       document.getElementById('score').innerText = totalScore;
     }
 
-    // HÀM MỞ GAME SIÊU NHẠY - KHÔNG BỊ TRẰNG MÀN HÌNH
     function openGame(gameNum) {
       initAudio();
       currentGameNum = gameNum;
-
-      // Đẩy state vào history để khi bấm Back trên điện thoại sẽ về Menu
-      history.pushState({ page: 'game' }, '', window.location.href);
 
       document.getElementById('home-screen').style.display = 'none';
 
@@ -413,3 +396,73 @@
     let g3Wins = 0;
 
     function startBubbleGame() {
+      stopBubbleGame();
+      g3Wins = 0;
+      document.getElementById('g3-score').innerText = g3Wins;
+      targetLetter = alphabet[Math.floor(Math.random() * 4)];
+      document.getElementById('target-letter').innerText = targetLetter;
+      bubbleInterval = setInterval(createBubble, 1000);
+    }
+
+    function stopBubbleGame() {
+      if (bubbleInterval) {
+        clearInterval(bubbleInterval);
+        bubbleInterval = null;
+      }
+      const area = document.getElementById('bubble-area');
+      if (area) area.innerHTML = '';
+    }
+
+    function createBubble() {
+      const area = document.getElementById('bubble-area');
+      if (!area || area.clientWidth === 0) return;
+
+      const bubble = document.createElement('div');
+      const randomChar = alphabet[Math.floor(Math.random() * alphabet.length)];
+      const size = Math.floor(Math.random() * 12) + 48;
+      const left = Math.random() * (area.clientWidth - size);
+
+      bubble.className = "absolute rounded-full bg-gradient-to-tr from-pink-400 to-rose-300 text-white font-black flex items-center justify-center shadow-lg border-2 border-white cursor-pointer select-none text-base";
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+      bubble.style.left = `${left}px`;
+      bubble.style.bottom = `${-50}px`;
+      bubble.innerText = randomChar;
+
+      let bottom = -50;
+      const speed = Math.random() * 1.5 + 1.2;
+      const moveTimer = setInterval(() => {
+        bottom += speed;
+        bubble.style.bottom = `${bottom}px`;
+        if (bottom > area.clientHeight + 50) {
+          clearInterval(moveTimer);
+          bubble.remove();
+        }
+      }, 20);
+
+      bubble.onclick = () => {
+        clearInterval(moveTimer);
+        playSound('pop');
+        bubble.classList.add('popping');
+
+        if (randomChar === targetLetter) {
+          addScore(5);
+          g3Wins++;
+          document.getElementById('g3-score').innerText = g3Wins;
+          if (g3Wins >= 5) {
+            stopBubbleGame();
+            playSound('win');
+            speak('Bé đập bong bóng đỉnh quá! Bé ơi nói mẹ thưởng nha!');
+            alert('Chiến thắng! Bé ơi nói mẹ thưởng nha 🎉');
+            goHome();
+          }
+        }
+
+        setTimeout(() => bubble.remove(), 200);
+      };
+
+      area.appendChild(bubble);
+    }
+  </script>
+</body>
+</html>
